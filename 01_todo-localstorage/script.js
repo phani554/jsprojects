@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     tasks.push(newTask);
     saveTask();
+    renderTask(newTask);
     todoInput.value = "";
     console.log(tasks);
     
@@ -32,14 +33,18 @@ document.addEventListener('DOMContentLoaded', () => {
     <span>${task.text} </span>
     <button> Delete </button>`;
     li.addEventListener('click', (e) => {
-      if (e.target.tagName === 'BUTTON') return ;//The Tag Name has to be written in all Caps
+      if (e.target.tagName === "BUTTON") return ;//The Tag Name has to be written in all Caps
       task.completed = !task.completed;
       li.classList.toggle('completed');
+      
       saveTask();
     })
 
     li.querySelector('button').addEventListener('click', (e) => {
-       
+       e.stopPropagation() // prevent event bubbling
+       tasks = tasks.filter((t) => t.id !== task.id);
+       saveTask();
+       li.remove();
     })
     todoList.appendChild(li);
   }
